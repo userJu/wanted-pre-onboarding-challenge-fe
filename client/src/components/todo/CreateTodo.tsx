@@ -32,6 +32,8 @@ const CreateTodo = ({ onCreateNewTodo }: Props) => {
     if (isValidInput()) {
       fetchCreateTodo({ title: inputTitle.value, content: inputContent.value });
       onCreateNewTodo();
+      inputTitle.reset();
+      inputContent.reset();
     }
   };
 
