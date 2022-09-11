@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { render } from "react-dom";
+import { fetchLogin, fetchSignUp } from "../../services/api/authAPI";
 import { isEmailValidate, isPasswordValidate } from "../../utils/validator";
 
 // 선언 부분에서의 둘의 차이점은 인터페이스는 당연하겠지만 객체에서만 사용이 가능
@@ -23,6 +23,20 @@ interface IAuthProps {
   loginOrSignin: string;
 }
 
+// 첫번째 인자는 API 주소
+
+// 두번째 인자는 http통신에 관한 데이터
+
+// method 에는 GET, POST, PATCH 등 HTTP method를 입력합니다.
+
+// body 에는 JSON 형태로 주고 받을 데이터를 넣습니다.
+
+// 통신을 할 때는 String 형태의 JSON으로 보내야 하기 때문에
+
+// JSON.stringify() 라는 메서드를 활용해서 포맷을 기존의 javascript
+
+// object에서 JSON String으로 변환해줍니다.
+
 const Auth = ({ loginOrSignin }: IAuthProps) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -32,6 +46,8 @@ const Auth = ({ loginOrSignin }: IAuthProps) => {
 
   const [emailValidate, setEmailValidate] = useState(false);
   const [passwordValidate, setPasswordValidate] = useState(false);
+  fetchSignUp({ email: "hello", password: "bye" });
+  // fetchLogin({ email: "hello", password: "bye" });
 
   useEffect(() => {
     emailRef.current?.focus();
@@ -42,6 +58,8 @@ const Auth = ({ loginOrSignin }: IAuthProps) => {
     setEmail(value); // 이거 맞나?
 
     if (isEmailValidate(value)) {
+      // 여기서 value로 검사해야 하는지 email로 검사해야 하는지
+      // 그리고 change로직과 검사 로직을 분리하는게 좋은지
       setEmailValidate(true);
     } else {
       setPasswordValidate(false);

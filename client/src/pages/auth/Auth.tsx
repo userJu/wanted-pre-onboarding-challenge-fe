@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AuthForm from "../../components/auth/AuthForm";
 import { render } from "react-dom";
 import styled from "styled-components";
 
@@ -26,7 +27,7 @@ const Auth = () => {
   return (
     <AuthContainer>
       <h1>{loginOrSignin}</h1>
-      {/* <AuthForm loginOrSignin={loginOrSignin}></AuthForm> */}
+      <AuthForm loginOrSignin={loginOrSignin}></AuthForm>
       <p onClick={handleLoginOrSignin}>
         {loginOrSignin === "Log In" ? "Sign In" : "Log In"}
       </p>
