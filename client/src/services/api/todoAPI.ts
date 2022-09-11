@@ -27,6 +27,21 @@ export const fetchCreateTodo = async (props: TodoInputProps) => {
   return await instance.post("", props);
 };
 export const fetchUpdateTodo = () => {};
-export const fetchDeleteTodo = () => {};
-export const fetchGetTodo = () => {};
+export const fetchDeleteTodo = async (id: string) => {
+  return await instance.delete(id);
+};
+
+export const fetchGetTodo = async () => {
+  return await instance.get("");
+};
+
 export const fetchGetTodoById = () => {};
+
+// CreateTodo
+// URL
+// POST /todos
+// Parameter
+// title: string
+// content: string
+// Headers
+// Authorization: login token
