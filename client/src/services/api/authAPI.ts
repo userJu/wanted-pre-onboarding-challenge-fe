@@ -1,4 +1,36 @@
-// import axios from "axios";
+import axios from "axios";
+
+interface LoginProps {
+  email: string;
+  password: string;
+}
+
+const instance = axios.create({
+  baseURL: "http://localhost:8080/users",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  // timeout:50000
+});
+
+export const fetchLogin = async (props: LoginProps) => {
+  try {
+    const { data } = await instance.post("login", props);
+    return data;
+  } catch (err: any) {
+    // any로 쓰면 안됨
+    console.log("login 에러 내용 : ", err.response.statusText);
+  }
+};
+
+export const fetchSignUp = async (props: LoginProps) => {
+  try {
+    const { data } = await axios.post("create", props);
+    return data;
+  } catch (err) {
+    console.log("sign up에러 발생");
+  }
+};
 
 // export const BASE_URL = "http://localhost:8080/users";
 
@@ -11,25 +43,20 @@
 //   throw new Error("요청 실패");
 // };
 
-// interface LoginProps {
-//   email: string;
-//   password: string;
-// }
+// // interface LoginProps {
+// //   email: string;
+// //   password: string;
+// // }
 
-// // export const fetchLogin = async (props: LoginProps) => {
-// //   await fetch(`http://localhost:8080/users/login`, {
-// //     method: "POST",
-// //     body: JSON.stringify({
-// //       email: props.email,
-// //       password: props.password,
-// //     }),
-// //   });
-// // };
-
-// const instance = axios.create({
-//   baseURL: "http://localhost:8080/users",
-//   // timeout:50000
-// });
+// export const fetchSignUp = async (props: LoginProps) => {
+//   await fetch(`http://localhost:8080/users/create`, {
+//     method: "POST",
+//     body: JSON.stringify({
+//       email: props.email,
+//       password: props.password,
+//     }),
+//   }).then((res) => console.log(res));
+// };
 
 // // export const fetchLogin = async (props: LoginProps) => {
 // //   const { data } = await instance.post("/login", props);
@@ -47,35 +74,3 @@
 //     console.error(error);
 //   }
 // }
-
-import axios from "axios";
-
-const instance = axios.create({
-  baseURL: "http://localhost:8080/users",
-});
-
-interface LoginProps {
-  email: string;
-  password: string;
-}
-
-// instance.interceptors.response.use(
-//   (res) => {
-//     const { token } = res.data;
-//     storage.set({ key: "token", value: token });
-//     return res;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
-const fetchLogin = (props: LoginProps) => {
-  return instance.post("/login", props);
-};
-
-const fetchSignUp = (props: LoginProps) => {
-  return instance.post("/create", props);
-};
-
-export { fetchLogin, fetchSignUp };

@@ -46,9 +46,6 @@ const Auth = ({ loginOrSignin }: IAuthProps) => {
 
   const [emailValidate, setEmailValidate] = useState(false);
   const [passwordValidate, setPasswordValidate] = useState(false);
-  fetchSignUp({ email: "hello", password: "bye" });
-  // fetchLogin({ email: "hello", password: "bye" });
-
   useEffect(() => {
     emailRef.current?.focus();
   }, []);
@@ -82,6 +79,11 @@ const Auth = ({ loginOrSignin }: IAuthProps) => {
   const handleAuthSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // 2. 검사가 완료되면 로그인
+    if (loginOrSignin === "Log In") {
+      fetchLogin({ email, password });
+    } else {
+      fetchSignUp({ email, password });
+    }
   };
 
   return (
