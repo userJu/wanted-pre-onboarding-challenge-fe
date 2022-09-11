@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchLogin, fetchSignUp } from "../../services/api/authAPI";
 import { isEmailValidate, isPasswordValidate } from "../../utils/validator";
 
@@ -38,6 +39,8 @@ interface IAuthProps {
 // object에서 JSON String으로 변환해줍니다.
 
 const Auth = ({ loginOrSignin }: IAuthProps) => {
+  const navigate = useNavigate();
+
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -78,7 +81,6 @@ const Auth = ({ loginOrSignin }: IAuthProps) => {
 
   const handleAuthSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 2. 검사가 완료되면 로그인
     if (loginOrSignin === "Log In") {
       fetchLogin({ email, password });
     } else {
