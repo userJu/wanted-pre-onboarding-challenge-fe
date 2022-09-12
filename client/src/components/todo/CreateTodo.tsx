@@ -9,18 +9,18 @@ const CreateTodo = ({ onCreateNewTodo }: Props) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
 
-  const inputTitle = useInput("");
-  const inputContent = useInput("");
+  const titleInput = useInput("");
+  const contentInput = useInput("");
 
   useEffect(() => {
     titleRef.current?.focus();
   }, []);
 
   const isValidInput = () => {
-    if (!inputTitle.value) {
+    if (!titleInput.value) {
       titleRef.current?.focus();
       return false;
-    } else if (!inputContent.value) {
+    } else if (!contentInput.value) {
       contentRef.current?.focus();
       return false;
     }
@@ -30,10 +30,10 @@ const CreateTodo = ({ onCreateNewTodo }: Props) => {
   const onSubmitNewTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isValidInput()) {
-      fetchCreateTodo({ title: inputTitle.value, content: inputContent.value });
+      fetchCreateTodo({ title: titleInput.value, content: contentInput.value });
       onCreateNewTodo();
-      inputTitle.reset();
-      inputContent.reset();
+      titleInput.resetvalue();
+      contentInput.resetvalue();
     }
   };
 
@@ -46,7 +46,8 @@ const CreateTodo = ({ onCreateNewTodo }: Props) => {
           type="text"
           id="title"
           ref={titleRef}
-          {...inputTitle}
+          value={titleInput.value}
+          onChange={titleInput.onChange}
           placeholder="TODO의 제목을 작성해주세요"
         />
         <label htmlFor="content">CONTENT : </label>
@@ -54,7 +55,8 @@ const CreateTodo = ({ onCreateNewTodo }: Props) => {
           type="text"
           id="content"
           ref={contentRef}
-          {...inputContent}
+          value={contentInput.value}
+          onChange={contentInput.onChange}
           placeholder="TODO의 설명을 작성해주세요"
         />
         <button>TODO 추가 👻</button>
