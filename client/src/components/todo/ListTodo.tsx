@@ -15,19 +15,40 @@ const Ul = styled.ul`
 interface Prop {
   todoDatas: TodoDatas[];
   deleteTodo: () => void;
+  updateTodo: (id: string, updateOrNot: boolean) => void;
+  showDetailTodo: (selectedTodo: TodoDatas) => void;
 }
 
-const ListTodo = ({ todoDatas, deleteTodo }: Prop) => {
+const ListTodo = ({
+  todoDatas,
+  deleteTodo,
+  updateTodo,
+  showDetailTodo,
+}: Prop) => {
   const handleDelete = (id: string) => {
     fetchDeleteTodo(id);
     deleteTodo();
   };
+
+  const handleCanUpdate = (id: string) => {
+    updateTodo(id, true);
+  };
+
+  const handleShowDetailId = (selectedToDo: TodoDatas) => {
+    showDetailTodo(selectedToDo);
+  };
+
   return (
     <Ul>
       {todoDatas.map((todoData) => (
-        <li key={todoData.id}>
+        <li
+          key={todoData.id}
+          onClick={() => {
+            handleShowDetailId(todoData);
+          }}
+        >
           {todoData.title}
-          <button>수정</button>
+          <button onClick={() => handleCanUpdate(todoData.id)}>수정</button>
           <button
             onClick={() => {
               handleDelete(todoData.id);
