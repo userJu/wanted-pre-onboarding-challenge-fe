@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setStorage } from "../../store/storage";
 
 interface LoginProps {
   email: string;
@@ -10,12 +11,23 @@ const instance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  // timeout:50000
+  timeout: 50000,
 });
+
+instance.interceptors.response.use(
+  (res) => {
+    const token = res.data.token;
+    setStorage({ key: "token", value: token });
+    return res;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const fetchLogin = async (props: LoginProps) => {
   try {
-    const { data } = await instance.post("login", props);
+    const { data } = await instance.post("/login", props);
     return data;
   } catch (err: any) {
     // any로 쓰면 안됨
@@ -25,7 +37,7 @@ export const fetchLogin = async (props: LoginProps) => {
 
 export const fetchSignUp = async (props: LoginProps) => {
   try {
-    const { data } = await axios.post("create", props);
+    const { data } = await instance.post("/create", props);
     return data;
   } catch (err) {
     console.log("sign up에러 발생");
