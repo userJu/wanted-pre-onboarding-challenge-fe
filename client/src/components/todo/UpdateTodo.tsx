@@ -5,10 +5,11 @@ import { fetchUpdateTodo } from "../../services/api/todoAPI";
 
 interface Props {
   selectedTodo: TodoDatas | undefined;
-  updateTodo: (id: string, updateOrNot: boolean) => void;
+  isUpdateTodo: (updateOrNot: boolean) => void;
+  updateTodo: (id: string) => void;
 }
 
-const UpdateTodo = ({ selectedTodo, updateTodo }: Props) => {
+const UpdateTodo = ({ selectedTodo, isUpdateTodo, updateTodo }: Props) => {
   const titleInput = useInput(selectedTodo?.title || "");
   const contentInput = useInput(selectedTodo?.content || "");
 
@@ -21,10 +22,12 @@ const UpdateTodo = ({ selectedTodo, updateTodo }: Props) => {
         content: contentInput.value,
       },
     });
+    isUpdateTodo(false);
+    updateTodo(selectedTodo?.id || "");
   };
 
   const handelDoNotUpdate = (id: string) => {
-    updateTodo(id, false);
+    isUpdateTodo(false);
   };
 
   return (

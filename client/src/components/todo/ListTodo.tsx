@@ -15,14 +15,14 @@ const Ul = styled.ul`
 interface Prop {
   todoDatas: TodoDatas[];
   deleteTodo: () => void;
-  updateTodo: (id: string, updateOrNot: boolean) => void;
+  isUpdateTodo: (updateOrNot: boolean) => void;
   showDetailTodo: (selectedTodo: TodoDatas) => void;
 }
 
 const ListTodo = ({
   todoDatas,
   deleteTodo,
-  updateTodo,
+  isUpdateTodo,
   showDetailTodo,
 }: Prop) => {
   const handleDelete = (id: string) => {
@@ -31,7 +31,7 @@ const ListTodo = ({
   };
 
   const handleCanUpdate = (id: string) => {
-    updateTodo(id, true);
+    isUpdateTodo(true);
   };
 
   const handleShowDetailId = (selectedToDo: TodoDatas) => {

@@ -1,58 +1,90 @@
-import React from "react";
-import { useState, useRef, useEffect } from "react";
+import {
+  fetchGetTodo,
+  fetchGetTodoById,
+  fetchUpdateTodo,
+} from "../../services/api/todoAPI";
+import { useState, useEffect } from "react";
+
+import CreateTodo from "../../components/todo/CreateTodo";
+import ListTodo from "../../components/todo/ListTodo";
+import DetailTodo from "../../components/todo/DetailTodo";
+import styled from "styled-components";
+import UpdateTodo from "../../components/todo/UpdateTodo";
+
+const TodoListAndDetailBox = styled.div`
+  border: 1px solid gray;
+  display: flex;
+`;
+
+export interface TodoDatas {
+  title: string;
+  content: string;
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 const Todo = () => {
-  const titleRef = useRef<HTMLInputElement>(null);
-  const contentRef = useRef<HTMLInputElement>(null);
-
-  // const [title, setTitle] = useState<string>("");
-  // const [content, setContent] = useState<string>("");
+  const [todoDatas, setTodoDatas] = useState<TodoDatas[]>([]);
+  const [selectedTodo, setSelectedTodo] = useState<TodoDatas | undefined>();
+  const [isUpdateState, setIsUpdateState] = useState<boolean>(false);
 
   useEffect(() => {
-    titleRef.current?.focus();
-  }, []);
+    getTodo();
+  }, [isUpdateState]);
 
-  const onSubmitNewTodo = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.dir(e.currentTarget.title);
-    console.dir(e.currentTarget.content);
+  const onCreateNewTodo = () => {
+    // 새로운 todo가 들어오면
+    getTodo();
+    // 할때마다 처음부터 그려줘서 비효율적
+    // react-query같은걸 사용해서 효율적으로 처리하거나
+    // 마지막으로 저장한것만 받아와서 todoDatas에 추가해주는게 좋을 것 같다
+  };
+
+  const getTodo = async () => {
+    const { data } = await fetchGetTodo();
+    setTodoDatas((prev) => [...data.data]);
+  };
+
+  const showDetailTodo = (selectedToDo: TodoDatas) => {
+    setSelectedTodo((prev) => selectedToDo);
+  };
+
+  const deleteTodo = () => {
+    getTodo();
+  };
+
+  const isUpdateTodo = (updateOrNot: boolean) => {
+    setIsUpdateState(updateOrNot);
+  };
+
+  const updateTodo = async (id: string) => {
+    const { data } = await fetchGetTodoById(id);
+
+    showDetailTodo(data.data);
   };
 
   return (
     <div>
-      {/* createtodo */}
-      <h1>새로운 TODO 만들기</h1>
-      <form action="submit" onSubmit={onSubmitNewTodo}>
-        <label htmlFor="title">TITLE : </label>
-        <input
-          type="text"
-          id="title"
-          ref={titleRef}
-          placeholder="TODO의 제목을 작성해주세요"
+      <CreateTodo onCreateNewTodo={onCreateNewTodo} />
+      <TodoListAndDetailBox>
+        <ListTodo
+          todoDatas={todoDatas}
+          deleteTodo={deleteTodo}
+          isUpdateTodo={isUpdateTodo}
+          showDetailTodo={showDetailTodo}
         />
-        <label htmlFor="content">CONTENT : </label>
-        <input
-          type="text"
-          id="content"
-          ref={contentRef}
-          placeholder="TODO의 설명을 작성해주세요"
-        />
-        <button>NEW TODO👻</button>
-      </form>
-      {/* list todo */}
-      <div>
-        <ul>
-          <li>list</li>
-        </ul>
-      </div>
-
-      {/* detailsTodo */}
-      <div>
-        <h3>todo title</h3>
-        <p>content</p>
         <hr />
-        <p>createdat or updated at</p>
-      </div>
+        {isUpdateState ? (
+          <UpdateTodo
+            selectedTodo={selectedTodo}
+            isUpdateTodo={isUpdateTodo}
+            updateTodo={updateTodo}
+          />
+        ) : (
+          <DetailTodo selectedTodo={selectedTodo} />
+        )}
+      </TodoListAndDetailBox>
     </div>
   );
 };

@@ -26,8 +26,18 @@ instance.interceptors.request.use(
 export const fetchCreateTodo = async (props: TodoInputProps) => {
   return await instance.post("", props);
 };
-export const fetchUpdateTodo = () => {};
+export const fetchUpdateTodo = async ({
+  id,
+  props,
+}: {
+  id: string;
+  props: TodoInputProps;
+}) => {
+  return await instance.put(id, props);
+};
+
 export const fetchDeleteTodo = async (id: string) => {
+  console.log(id);
   return await instance.delete(id);
 };
 
@@ -35,7 +45,9 @@ export const fetchGetTodo = async () => {
   return await instance.get("");
 };
 
-export const fetchGetTodoById = () => {};
+export const fetchGetTodoById = (id: string) => {
+  return instance.get(id);
+};
 
 // CreateTodo
 // URL

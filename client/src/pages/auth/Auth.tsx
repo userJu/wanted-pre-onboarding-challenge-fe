@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import AuthForm from "../../components/auth/AuthForm";
-import { render } from "react-dom";
 import styled from "styled-components";
 
 const AuthContainer = styled.div`

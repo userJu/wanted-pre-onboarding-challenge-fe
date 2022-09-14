@@ -62,7 +62,7 @@ const Auth = ({ loginOrSignin }: IAuthProps) => {
       // 그리고 change로직과 검사 로직을 분리하는게 좋은지
       setEmailValidate(true);
     } else {
-      setPasswordValidate(false);
+      setEmailValidate(false);
     }
   };
 
